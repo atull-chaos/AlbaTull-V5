@@ -225,15 +225,14 @@ videoCellIndices.forEach(pos => { videoCellMap.set(pos, vIdx++); });
 
         const currentUrl = cellUrls.get(cell) || current.src;
         const newUrl = pickNewUrl(currentUrl);
-
-        // Update the link href IMMEDIATELY so clicking always goes to the right photo
-        if (cell.tagName === 'A') {
-          const slug = thumbToSlug[newUrl];
-          if (slug) cell.href = `/photo/${slug}/`;
-        }
         cellUrls.set(cell, newUrl);
 
         next.onload = () => {
+          // Update href only AFTER the new image is visible
+          if (cell.tagName === 'A') {
+            const slug = thumbToSlug[newUrl];
+            if (slug) cell.href = `/photo/${slug}/`;
+          }
           next.classList.add('is-visible');
           current.classList.add('is-hidden');
           setTimeout(() => {

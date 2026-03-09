@@ -51,11 +51,10 @@ if (source === 'cache') {
       metadata = cached.metadata || null;
       additionalCategories = cached.additionalCategories || [];
 
-      // Get related photos from same category
+      // Get ALL related photos from same category (no limit)
       const allCached = (readCache() || { photos: [] }).photos;
       related = allCached
         .filter(p => p.category?.slug === categorySlug && p.slug !== slug && p.image)
-        .slice(0, 6)
         .map(r => ({
           id:    r._id,
           title: r.title || 'Untitled',

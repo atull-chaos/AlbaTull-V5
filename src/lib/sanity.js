@@ -76,7 +76,7 @@ export async function getPhotoBySlug(slug) {
       video,
       featured,
       metadata,
-      "related": *[_type == "photo" && category._ref == ^.category._ref && _id != ^._id][0...6] {
+      "related": *[_type == "photo" && category._ref == ^.category._ref && _id != ^._id] {
         _id, title, "slug": slug.current, image, category->{name, "slug": slug.current}
       }
     }
@@ -105,7 +105,7 @@ export async function getAllCategories() {
         "photoCount": count(*[_type == "photo" && (category._ref == ^._id || ^._id in additionalCategories[]._ref)])
       },
       "photoCount": count(*[_type == "photo" && (category._ref == ^._id || ^._id in additionalCategories[]._ref)]),
-      "previewPhotos": *[_type == "photo" && (category._ref == ^._id || ^._id in additionalCategories[]._ref)] | order(title asc) [0...8] {
+      "previewPhotos": *[_type == "photo" && (category._ref == ^._id || ^._id in additionalCategories[]._ref)] | order(title asc) [0...12] {
         _id, title, "slug": slug.current, image
       }
     }
