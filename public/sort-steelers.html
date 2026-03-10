@@ -278,12 +278,13 @@ function updateCounts() {
   document.getElementById('count-u').textContent = photos.length - p - a;
 
   var btn = document.getElementById('btn-apply');
-  var allSorted = (p + a) === photos.length && photos.length > 0;
-  btn.disabled = !allSorted;
-  if (!allSorted) {
-    btn.textContent = 'Sort All Photos First (' + (photos.length - p - a) + ' left)';
+  var unsorted = photos.length - p - a;
+  var hasSelections = (p + a) > 0;
+  btn.disabled = !hasSelections;
+  if (!hasSelections) {
+    btn.textContent = 'Click photos to sort them first';
   } else {
-    btn.textContent = 'Apply Changes (' + p + ' portraits, ' + a + ' action)';
+    btn.textContent = 'Apply Changes (' + p + ' portraits, ' + a + ' action' + (unsorted > 0 ? ', ' + unsorted + ' unsorted stay in Steelers' : '') + ')';
   }
 }
 
