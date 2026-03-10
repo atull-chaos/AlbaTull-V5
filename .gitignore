@@ -3,3 +3,4 @@ dist
 .astro
 .sanity-cache.json
 package-lock.json
+.env

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { fetchAllWithCache, getPhotosByCategory as getSanityPhotosByCategory, urlFor } from '../../lib/sanity.js';
+import { fetchAllWithCache, getPhotosByCategory as getSanityPhotosByCategory, getPhotosByParentCategory as getSanityPhotosByParentCategory, urlFor } from '../../lib/sanity.js';
 import { getCategories as getLocalCategories, getPhotosByCategory as getLocalPhotosByCategory } from '../../data/photos.js';
 
 // ── Generate paths from Sanity → Cache → Local fallback ─────────
@@ -110,7 +110,10 @@ if (source === 'cache') {
   }
 } else if (source === 'sanity') {
   try {
-    const sanityPhotos = await getSanityPhotosByCategory(slug);
+    // Parent categories need to aggregate photos from all children
+    const sanityPhotos = (isParent && children.length > 0)
+      ? await getSanityPhotosByParentCategory(slug)
+      : await getSanityPhotosByCategory(slug);
     photos = sanityPhotos.map(p => ({
       id:    p._id,
       title: p.title || 'Untitled',

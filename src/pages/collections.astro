@@ -9,6 +9,7 @@ let allCategories = [];
 const { categories: rawCats, source } = await fetchAllWithCache();
 
 if ((source === 'sanity' || source === 'cache') && rawCats && rawCats.length > 0) {
+  // First pass: build all categories
   allCategories = rawCats.map(c => ({
     name:        c.name,
     slug:        c.slug,
@@ -31,6 +32,16 @@ if ((source === 'sanity' || source === 'cache') && rawCats && rawCats.length > 0
         img:   urlFor(p.image).width(400).height(400).fit('crop').quality(60).auto('format').url()
       }))
   }));
+
+  // Second pass: parent categories with no direct photos — pull from children
+  allCategories.forEach(cat => {
+    if (cat.isParent && cat.photos.length === 0 && cat.children.length > 0) {
+      const childSlugs = cat.children.map(ch => ch.slug);
+      const childCats = allCategories.filter(c => childSlugs.includes(c.slug));
+      const childPhotos = childCats.flatMap(c => c.photos);
+      cat.photos = childPhotos.slice(0, 12);
+    }
+  });
 } else {
   const localCats = getLocalCategories();
   allCategories = localCats.map(c => ({

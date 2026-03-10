@@ -660,36 +660,32 @@
 
       // ── Lightweight Sanity REST client (no SDK needed) ────────────
       var API_BASE = 'https://' + CONFIG.projectId + '.api.sanity.io/v' + CONFIG.apiVersion;
-      var API_CDN  = 'https://' + CONFIG.projectId + '.apicdn.sanity.io/v' + CONFIG.apiVersion;
       var ASSETS_URL = API_BASE + '/assets/images/' + CONFIG.dataset;
       var MUTATE_URL = API_BASE + '/data/mutate/' + CONFIG.dataset;
-      var QUERY_URL  = API_CDN + '/data/query/' + CONFIG.dataset;
+      var QUERY_URL  = API_BASE + '/data/query/' + CONFIG.dataset;
       var DOC_URL    = API_BASE + '/data/doc/' + CONFIG.dataset;
 
-      var headers = {
-        'Authorization': 'Bearer ' + CONFIG.token,
-        'Content-Type': 'application/json'
-      };
+      var authHeader = { 'Authorization': 'Bearer ' + CONFIG.token };
 
-      // Query Sanity (GROQ)
+      // Query Sanity (GROQ) — GET request, no Content-Type needed
       async function sanityFetch(query) {
         var url = QUERY_URL + '?query=' + encodeURIComponent(query);
-        var res = await fetch(url, { headers: headers });
+        var res = await fetch(url, { headers: authHeader });
         if (!res.ok) throw new Error('Query failed: ' + res.status);
         var data = await res.json();
         return data.result;
       }
 
-      // Get a single document by ID
+      // Get a single document by ID — GET request
       async function getDocument(id) {
         var url = DOC_URL + '/' + encodeURIComponent(id);
-        var res = await fetch(url, { headers: headers });
+        var res = await fetch(url, { headers: authHeader });
         if (!res.ok) return null;
         var data = await res.json();
         return data.documents && data.documents[0] || null;
       }
 
-      // Upload an image asset (binary)
+      // Upload an image asset (binary) — POST with image Content-Type
       async function uploadImage(file) {
         var res = await fetch(ASSETS_URL + '?filename=' + encodeURIComponent(file.name), {
           method: 'POST',
@@ -707,11 +703,14 @@
         return data.document;
       }
 
-      // Create or replace a document
+      // Create or replace a document — POST with JSON Content-Type
       async function createOrReplace(doc) {
         var res = await fetch(MUTATE_URL, {
           method: 'POST',
-          headers: headers,
+          headers: {
+            'Authorization': 'Bearer ' + CONFIG.token,
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify({
             mutations: [{ createOrReplace: doc }]
           })
