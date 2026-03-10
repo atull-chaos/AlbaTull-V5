@@ -684,7 +684,7 @@ a.mosaic-cell {
 
 .photo-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   gap: 3px;
 }
 
@@ -1241,7 +1241,7 @@ a.mosaic-cell {
 /* Clean uniform grid */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 4px;
 }
 
@@ -1319,7 +1319,7 @@ a.mosaic-cell {
     padding: 0 32px 32px;
   }
   .gallery-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
   .gallery-section-header {
     flex-direction: column;
@@ -1346,7 +1346,7 @@ a.mosaic-cell {
     font-size: 26px;
   }
   .gallery-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 3px;
   }
 }
@@ -1531,7 +1531,7 @@ a.mosaic-cell {
     padding: 32px 24px 60px;
   }
   .photo-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
   .collections-header {
     padding: 0 24px 32px;
@@ -1602,7 +1602,7 @@ a.mosaic-cell {
     padding: 20px 16px 40px;
   }
   .photo-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 2px;
   }
   .about-title {
